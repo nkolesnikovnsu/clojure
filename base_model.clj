@@ -4,7 +4,7 @@
 
 (def class-hierarchy (ref {}))
 
-;; Place class Object on the top of hierarchy
+;;Данный фрагмент кода на языке Clojure инициализирует хранилище для иерархии классов и устанавливает класс Object как базовый класс в этой иерархии.
 (dosync
   (alter
     class-hierarchy
@@ -15,15 +15,12 @@
             ::super  nil
             ::fields #{}}))))
 
-;; Init storage for methods names
-
+;;Начальное хранилище для имен методов
 (def defined-methods-names (ref []))
 
 ;; Class methods
-
 (defmacro def-class
-  "Class definition macro. Adds a map containing class information to class hierarchy.
-   There is no checking for crossing of attributes and methods"
+  "Макрос определения класса. Добавляет карту, содержащую информацию о классе, в иерархию классов. Нет проверки на пересечение атрибутов и методов."
   [name & sections]
   {:pre (keyword? name)}
   (let [s-map (if (empty? sections)
@@ -72,8 +69,7 @@
                                  ((@class-hierarchy class) ::super))))
     (throw (Exception. "Unknown class."))))
 
-;; Object methods
-
+;; Объектные методы
 (defn create-obj [class & fields]
   "Create object"
   (let [f-map (apply hash-map fields)
@@ -99,10 +95,10 @@
   (dosync (alter (obj ::fields) assoc-in [field] val))
   )
 
-;; Methods dispatching
+;; Диспетчеризация методов
 
 (defn visited?
-  "Predicate which returns true if the node v has been visited already, false otherwise."
+  "Предикат, возвращающий true, если узел v уже был посещен, false - в противном случае."
   [v coll]
   (some #(= % v) coll))
 
